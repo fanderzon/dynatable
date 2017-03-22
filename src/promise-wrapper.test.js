@@ -4,7 +4,8 @@ const pinkPony = {pink: 'pony'};
 const deadPony = new Error('dead pony');
 const someApi = {
   methodA: () => {},
-  methodB: (params, cb) => cb(null, pinkPony)
+  methodB: (params, cb) => cb(null, pinkPony),
+  methodC: (params, cb) => cb(deadPony),
 };
 describe('promiseWrapper', () => {
   it('Should return a promise', () => {
@@ -15,7 +16,7 @@ describe('promiseWrapper', () => {
       .then(data => expect(data).toEqual(pinkPony));
   });
   it('Should reject with callback error', () => {
-    promiseWrapper(someApi, 'methodB', {})
+    promiseWrapper(someApi, 'methodC', {})
       .catch(err => expect(err).toBe(deadPony))
   });
   it('Should reject with when calling undefined methods', () => {
