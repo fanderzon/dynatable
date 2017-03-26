@@ -1,4 +1,4 @@
-import { splitKeysAndParams } from './query';
+import { splitKeysAndParams, createFilterQuery } from './query';
 
 const paramsA = { id: 1, name: 'pink pony', interests: 'ponying?' };
 const keysA = { id: 'N' };
@@ -14,5 +14,11 @@ describe('splitKeysAndParams', () => {
   it('Should return null on faulty input', () => {
     expect(splitKeysAndParams('a string', keysA)).toEqual(null);
     expect(splitKeysAndParams(paramsA, ['1', 2, 3])).toEqual(null);
+  });
+});
+
+describe('createFilterQuery', () => {
+  it('Should create filter expression out of single key/value pair', () => {
+    expect(createFilterQuery({ a: 1 })).toEqual({ExpressionAttributeNames: {'#dta': 'a'}, ExpressionAttributeValues: {':dta': 1}, FilterExpression: '(#dta = :dta)'});
   });
 });
