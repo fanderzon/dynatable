@@ -1,11 +1,12 @@
 import promiseWrapper from './promise-wrapper';
+import { splitKeysAndParams } from './query';
+import { isObject } from './util';
+import find from './find';
 
-export default function tableWrapper(docClient, TableName) {
+export default function tableWrapper(docClient, TableName, tableKeyDefinition) {
+  const tableParams = { docClient, TableName, tableKeyDefinition };
   return {
-    get: params => promiseWrapper(docClient, 'get', {
-      TableName,
-      Key: params,
-    }),
+    find: params => find(Object.assign({}, tableParams, { params })),
     put: params => promiseWrapper(docClient, 'put', {
       TableName,
       Item: params,
