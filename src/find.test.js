@@ -37,4 +37,20 @@ describe('find', () => {
     find({ docClient, TableName, tableKeyDefinition, params: { id: 5, name: 'Pony', isPink: true } });
     expect(docClient.scan.mock.calls.length).toBe(2);
   });
+
+  it('Should return an array if resolved', () => {
+    docClient = {
+      get: jest.fn((params, cb) => cb(null, {
+        Item: { id: 1 }
+      })),
+      scan: jest.fn((params, cb) => cb(null, {
+        Items: [ { id: 1 }, { id: 2 } ]
+      })),
+    };
+
+    find({ docClient, TableName, tableKeyDefinition, params: { id: 5 } })
+      .then(res => expect(Array.isArray(res)).toBeTruthy());
+    find({ docClient, TableName, tableKeyDefinition, params: { id: 5, isPirple: 'huh?' } })
+      .then(res => expect(Array.isArray(res)).toBeTruthy());
+  });
 });
