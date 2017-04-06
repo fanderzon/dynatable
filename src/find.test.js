@@ -68,3 +68,35 @@ describe('find', () => {
       .then(res => expect(Array.isArray(res) && res.length === 0).toBeTruthy());
   });
 });
+
+describe('findOne', () => {
+  it('Should return the first item', () => {
+    docClient = {
+      get: jest.fn((params, cb) => cb(null, {
+        Item: { id: 1 }
+      })),
+      scan: jest.fn((params, cb) => cb(null, {
+        Items: [ { id: 1 }, { id: 2 } ]
+      })),
+    };
+
+    findOne({ docClient, TableName, tableKeyDefinition, params: { id: 1 } })
+      .then(res => expect(res).toEqual({ id: 1 }));
+    findOne({ docClient, TableName, tableKeyDefinition, params: { id: 1, whois: 'Mr. Poopybutthole' } })
+      .then(res => expect(res).toEqual({ id: 1 }));
+  });
+
+  it('Should return null when no result', () => {
+    docClient = {
+      get: jest.fn((params, cb) => cb(null, {})),
+      scan: jest.fn((params, cb) => cb(null, {
+        Items: []
+      })),
+    };
+
+    findOne({ docClient, TableName, tableKeyDefinition, params: { id: 1 } })
+      .then(res => expect(res).toBe(null));
+    findOne({ docClient, TableName, tableKeyDefinition, params: { id: 1, whois: 'Mr. Poopybutthole' } })
+      .then(res => expect(res).toBe(null));
+  });
+});
