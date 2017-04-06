@@ -2,7 +2,7 @@ import { find, findOne } from './find';
 
 let docClient;
 let TableName = 'w00t';
-let tableKeyDefinition = { id: 'N' };
+let tableKeyDefinition = { id: 'N', name: 'S' };
 let params = { id: 1 };
 
 describe('find', () => {
@@ -32,5 +32,9 @@ describe('find', () => {
     expect(docClient.get.mock.calls.length).toBe(1);
     find({ docClient, TableName, tableKeyDefinition, params: { blorg: 5 } });
     expect(docClient.scan.mock.calls.length).toBe(1);
+    find({ docClient, TableName, tableKeyDefinition, params: { id: 5, name: 'Pony' } });
+    expect(docClient.get.mock.calls.length).toBe(2);
+    find({ docClient, TableName, tableKeyDefinition, params: { id: 5, name: 'Pony', isPink: true } });
+    expect(docClient.scan.mock.calls.length).toBe(2);
   });
 });
