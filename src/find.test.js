@@ -49,8 +49,22 @@ describe('find', () => {
     };
 
     find({ docClient, TableName, tableKeyDefinition, params: { id: 5 } })
-      .then(res => expect(Array.isArray(res)).toBeTruthy());
+      .then(res => expect(Array.isArray(res) && res.length === 1).toBeTruthy());
     find({ docClient, TableName, tableKeyDefinition, params: { id: 5, isPirple: 'huh?' } })
-      .then(res => expect(Array.isArray(res)).toBeTruthy());
+      .then(res => expect(Array.isArray(res) && res.length === 2).toBeTruthy());
+  });
+
+  it('Should return an empty array when resolved without Item or Items keys', () => {
+    docClient = {
+      get: jest.fn((params, cb) => cb(null, { id: 1 })),
+      scan: jest.fn((params, cb) => cb(null,
+        [ { id: 1 }, { id: 2 } ]
+      )),
+    };
+
+    find({ docClient, TableName, tableKeyDefinition, params: { id: 5 } })
+      .then(res => expect(Array.isArray(res) && res.length === 0).toBeTruthy());
+    find({ docClient, TableName, tableKeyDefinition, params: { id: 5, isPirple: 'huh?' } })
+      .then(res => expect(Array.isArray(res) && res.length === 0).toBeTruthy());
   });
 });
