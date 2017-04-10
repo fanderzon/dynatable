@@ -1,4 +1,10 @@
-import { splitKeysAndParams, createFilterQuery } from './query';
+import {
+  splitKeysAndParams,
+  createFilterQuery,
+  constructComparisonString,
+  keyPrefix,
+  valuePrefix
+} from './query';
 
 const paramsA = { id: 1, name: 'pink pony', interests: 'ponying?' };
 const keysA = { id: 'N' };
@@ -20,5 +26,11 @@ describe('splitKeysAndParams', () => {
 describe('createFilterQuery', () => {
   it('Should create filter expression out of single key/value pair', () => {
     expect(createFilterQuery({ a: 1 })).toEqual({ExpressionAttributeNames: {'#dta': 'a'}, ExpressionAttributeValues: {':dta': 1}, FilterExpression: '(#dta = :dta)'});
+  });
+});
+
+describe('constructComparisonString', () => {
+  it('Should default to equality', () => {
+    expect(constructComparisonString('a', 1)).toEqual(`(${keyPrefix}a = ${valuePrefix}a)`);
   });
 });

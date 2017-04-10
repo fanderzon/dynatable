@@ -1,7 +1,7 @@
 import { isObject } from './util';
 
-const keyPrefix = '#dt';
-const valuePrefix = ':dt';
+export const keyPrefix = '#dt';
+export const valuePrefix = ':dt';
 
 // Splits an object of query params into 2 objects
 // One for any params that matches the defined table keys
@@ -56,5 +56,5 @@ const comparisonKeys = [
   '$nin', // Matches none of the values specified in an array.
 ];
 export function constructComparisonString(key, value) {
-  
+  return `(${keyPrefix}${key} = ${valuePrefix}${key})`;
 }
