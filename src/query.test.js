@@ -49,4 +49,10 @@ describe('constructComparisonString', () => {
   it('Should support $ne operator', () => {
     expect(constructComparisonString('a', { $ne: 1})).toEqual(`(${keyPrefix}a <> ${valuePrefix}a)`);
   });
+  it('Should support $in operator', () => {
+    expect(constructComparisonString('a', { $in: ['b', 'c', 'd']})).toEqual(`(${keyPrefix}a IN ${valuePrefix}a)`);
+  });
+  it('Should support $nin operator', () => {
+    expect(constructComparisonString('a', { $nin: ['b', 'c', 'd']})).toEqual(`(${keyPrefix}a NOT IN ${valuePrefix}a)`);
+  });
 });

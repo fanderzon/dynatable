@@ -74,6 +74,10 @@ export function constructComparisonString(key, value) {
       return `(${keyPrefix}${key} <= ${valuePrefix}${key})`;
     case '$ne':
       return `(${keyPrefix}${key} <> ${valuePrefix}${key})`;
+    case '$in':
+      return `(${keyPrefix}${key} IN ${valuePrefix}${key})`;
+    case '$nin':
+      return `(${keyPrefix}${key} NOT IN ${valuePrefix}${key})`;
     default:
       return equalityString;
   }
