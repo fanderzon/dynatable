@@ -32,8 +32,18 @@ describe('createFilterQuery', () => {
 describe('constructComparisonString', () => {
   it('Should default to equality', () => {
     expect(constructComparisonString('a', 1)).toEqual(`(${keyPrefix}a = ${valuePrefix}a)`);
+    expect(constructComparisonString('a', {pinkPony: 1})).toEqual(`(${keyPrefix}a = ${valuePrefix}a)`);
   });
-  it('Should default to equality', () => {
+  it('Should support $gt operator', () => {
     expect(constructComparisonString('a', { $gt: 1})).toEqual(`(${keyPrefix}a > ${valuePrefix}a)`);
+  });
+  it('Should support $gte operator', () => {
+    expect(constructComparisonString('a', { $gte: 1})).toEqual(`(${keyPrefix}a >= ${valuePrefix}a)`);
+  });
+  it('Should support $lt operator', () => {
+    expect(constructComparisonString('a', { $lt: 1})).toEqual(`(${keyPrefix}a < ${valuePrefix}a)`);
+  });
+  it('Should support $lte operator', () => {
+    expect(constructComparisonString('a', { $lte: 1})).toEqual(`(${keyPrefix}a <= ${valuePrefix}a)`);
   });
 });

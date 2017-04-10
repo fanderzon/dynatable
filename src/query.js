@@ -66,7 +66,12 @@ export function constructComparisonString(key, value) {
   switch (firstKey) {
     case '$gt':
       return `(${keyPrefix}${key} > ${valuePrefix}${key})`;
-      break;
+    case '$gte':
+      return `(${keyPrefix}${key} >= ${valuePrefix}${key})`;
+    case '$lt':
+      return `(${keyPrefix}${key} < ${valuePrefix}${key})`;
+    case '$lte':
+      return `(${keyPrefix}${key} <= ${valuePrefix}${key})`;
     default:
       return equalityString;
   }
