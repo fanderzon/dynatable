@@ -56,5 +56,18 @@ const comparisonKeys = [
   '$nin', // Matches none of the values specified in an array.
 ];
 export function constructComparisonString(key, value) {
-  return `(${keyPrefix}${key} = ${valuePrefix}${key})`;
+  // If value is not an object we can return the default (equality comparison)
+  const equalityString = `(${keyPrefix}${key} = ${valuePrefix}${key})`;
+  if (!isObject(value)) {
+    return equalityString;
+  }
+
+  const firstKey = Object.keys(value)[0];
+  switch (firstKey) {
+    case '$gt':
+      return `(${keyPrefix}${key} > ${valuePrefix}${key})`;
+      break;
+    default:
+      return equalityString;
+  }
 }

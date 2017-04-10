@@ -33,4 +33,7 @@ describe('constructComparisonString', () => {
   it('Should default to equality', () => {
     expect(constructComparisonString('a', 1)).toEqual(`(${keyPrefix}a = ${valuePrefix}a)`);
   });
+  it('Should default to equality', () => {
+    expect(constructComparisonString('a', { $gt: 1})).toEqual(`(${keyPrefix}a > ${valuePrefix}a)`);
+  });
 });
