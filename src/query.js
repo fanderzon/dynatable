@@ -29,7 +29,7 @@ export function createFilterQuery(params) {
   return {
     FilterExpression: paramKeys.reduce((acc, key) => {
       const maybeAnd = acc === '' ? '' : ' AND '
-      return `${acc}${maybeAnd}(${keyPrefix}${key} = ${valuePrefix}${key})`;
+      return `${acc}${maybeAnd}${constructComparisonString(key, params[key])}`;
     }, ''),
     ExpressionAttributeNames: paramKeys.reduce((acc, key) => {
       return Object.assign(acc, {
