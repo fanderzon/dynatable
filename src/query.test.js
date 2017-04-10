@@ -2,6 +2,7 @@ import {
   splitKeysAndParams,
   createFilterQuery,
   constructComparisonString,
+  constructAttributeValue,
   keyPrefix,
   valuePrefix
 } from './query';
@@ -54,5 +55,27 @@ describe('constructComparisonString', () => {
   });
   it('Should support $nin operator', () => {
     expect(constructComparisonString('a', { $nin: ['b', 'c', 'd']})).toEqual(`(${keyPrefix}a NOT IN ${valuePrefix}a)`);
+  });
+});
+
+describe('constructAttributeValue', () => {
+  it('Should strip out values from comparison objects', () => {
+    expect(constructAttributeValue('a', { $eq: 1 })).toEqual({ [`${valuePrefix}a`]: 1 });
+    expect(constructAttributeValue('a', { $ne: 1 })).toEqual({ [`${valuePrefix}a`]: 1 });
+    expect(constructAttributeValue('a', { $lt: 1 })).toEqual({ [`${valuePrefix}a`]: 1 });
+    expect(constructAttributeValue('a', { $lte: 1 })).toEqual({ [`${valuePrefix}a`]: 1 });
+    expect(constructAttributeValue('a', { $gt: 1 })).toEqual({ [`${valuePrefix}a`]: 1 });
+    expect(constructAttributeValue('a', { $gte: 1 })).toEqual({ [`${valuePrefix}a`]: 1 });
+    expect(constructAttributeValue('b', { $in: [1,2,3] })).toEqual({ [`${valuePrefix}b`]: [1,2,3] });
+    expect(constructAttributeValue('b', { $nin: [1,2,3] })).toEqual({ [`${valuePrefix}b`]: [1,2,3] });
+  });
+
+  it('Should leave other objects alone', () => {
+    expect(constructAttributeValue('a', { pink: 1, pony: 'Dead?' })).toEqual({ [`${valuePrefix}a`]: { pink: 1, pony: 'Dead?' } });
+  });
+
+  it('Should leave non objects alone', () => {
+    expect(constructAttributeValue('a', 'sup')).toEqual({ [`${valuePrefix}a`]: 'sup' });
+      expect(constructAttributeValue('a', 6)).toEqual({ [`${valuePrefix}a`]: 6 });
   });
 });

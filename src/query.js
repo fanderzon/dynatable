@@ -37,10 +37,7 @@ export function createFilterQuery(params) {
       });
     }, {}),
     ExpressionAttributeValues: paramKeys.reduce((acc, key) => {
-      const val = params[key];
-      return Object.assign(acc, {
-        [`${valuePrefix}${key}`]: val,
-      });
+      return Object.assign(acc, constructAttributeValue(key, params[key]));
     }, {}),
   };
 }
@@ -81,4 +78,16 @@ export function constructComparisonString(key, value) {
     default:
       return equalityString;
   }
+}
+
+export function constructAttributeValue(key, value) {
+  // If value is a comparison object pick out the actual value from that
+  if (isObject(value)) {
+    const firstKey = Object.keys(value)[0];
+    if (firstKey && comparisonKeys.indexOf(firstKey) !== -1) {
+      value = value[firstKey];
+    }
+  }
+
+  return { [`${valuePrefix}${key}`]: value };
 }
