@@ -46,4 +46,7 @@ describe('constructComparisonString', () => {
   it('Should support $lte operator', () => {
     expect(constructComparisonString('a', { $lte: 1})).toEqual(`(${keyPrefix}a <= ${valuePrefix}a)`);
   });
+  it('Should support $ne operator', () => {
+    expect(constructComparisonString('a', { $ne: 1})).toEqual(`(${keyPrefix}a <> ${valuePrefix}a)`);
+  });
 });
