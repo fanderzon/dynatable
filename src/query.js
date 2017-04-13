@@ -72,7 +72,16 @@ export function constructComparisonString(key, value) {
     case '$ne':
       return `(${keyPrefix}${key} <> ${valuePrefix}${key})`;
     case '$in':
-      return `(${keyPrefix}${key} IN ${valuePrefix}${key})`;
+      const val = value[firstKey];
+      // Default valuestring for a single value
+      let valueString = `(${valuePrefix}${key})`
+      if (Array.isArray(val)) {
+        // If array create multiple comma separated entries
+        valueString = val.reduce((acc, curr, i) => {
+          return `${acc}${i > 0 ? ', ' : ''}${valuePrefix}${key}${i}${i === (val.length - 1) ? ')' : ''}`;
+        }, '(');
+      }
+      return `(${keyPrefix}${key} IN ${valueString})`;
     case '$nin':
       return `(${keyPrefix}${key} NOT IN ${valuePrefix}${key})`;
     default:
