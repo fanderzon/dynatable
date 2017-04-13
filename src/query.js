@@ -60,6 +60,7 @@ export function constructComparisonString(key, value) {
   }
 
   const firstKey = Object.keys(value)[0];
+  const val = value[firstKey];
   switch (firstKey) {
     case '$gt':
       return `(${keyPrefix}${key} > ${valuePrefix}${key})`;
@@ -72,20 +73,23 @@ export function constructComparisonString(key, value) {
     case '$ne':
       return `(${keyPrefix}${key} <> ${valuePrefix}${key})`;
     case '$in':
-      const val = value[firstKey];
-      // Default valuestring for a single value
-      let valueString = `(${valuePrefix}${key})`
-      if (Array.isArray(val)) {
-        // If array create multiple comma separated entries
-        valueString = val.reduce((acc, curr, i) => {
-          return `${acc}${i > 0 ? ', ' : ''}${valuePrefix}${key}${i}${i === (val.length - 1) ? ')' : ''}`;
-        }, '(');
-      }
-      return `(${keyPrefix}${key} IN ${valueString})`;
+      return `(${keyPrefix}${key} IN ${constructInValueString(key, val)})`;
     case '$nin':
-      return `(${keyPrefix}${key} NOT IN ${valuePrefix}${key})`;
+      return `(${keyPrefix}${key} NOT IN ${constructInValueString(key, val)})`;
     default:
       return equalityString;
+  }
+
+  function constructInValueString(key, value) {
+    // Default valuestring for a single value
+    let valueString = `(${valuePrefix}${key})`
+    if (Array.isArray(value)) {
+      // If array create multiple comma separated entries
+      valueString = value.reduce((acc, curr, i) => {
+        return `${acc}${i > 0 ? ', ' : ''}${valuePrefix}${key}${i}${i === (value.length - 1) ? ')' : ''}`;
+      }, '(');
+    }
+    return valueString;
   }
 }
 

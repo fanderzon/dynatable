@@ -54,7 +54,7 @@ describe('constructComparisonString', () => {
     expect(constructComparisonString('a', { $in: ['b', 'c', 'd']})).toEqual(`(${keyPrefix}a IN (${valuePrefix}a0, ${valuePrefix}a1, ${valuePrefix}a2))`);
   });
   it('Should support $nin operator', () => {
-    expect(constructComparisonString('a', { $nin: ['b', 'c', 'd']})).toEqual(`(${keyPrefix}a NOT IN ${valuePrefix}a)`);
+    expect(constructComparisonString('a', { $nin: ['b', 'c', 'd']})).toEqual(`(${keyPrefix}a NOT IN (${valuePrefix}a0, ${valuePrefix}a1, ${valuePrefix}a2))`);
   });
 });
 
