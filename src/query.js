@@ -97,7 +97,13 @@ export function constructAttributeValue(key, value) {
   // If value is a comparison object pick out the actual value from that
   if (isObject(value)) {
     const firstKey = Object.keys(value)[0];
-    if (firstKey && comparisonKeys.indexOf(firstKey) !== -1) {
+    // If an IN or NOT IN object split out each value from the array
+    if (firstKey === '$in' || firstKey === '$nin' && typeof value[firstKey] !== 'undefined') {
+      return value[firstKey].reduce((acc, curr, index) => {
+        acc[`${valuePrefix}${key}${index}`] = curr;
+        return acc;
+      }, {});
+    } else if (firstKey && comparisonKeys.indexOf(firstKey) !== -1) {
       value = value[firstKey];
     }
   }
