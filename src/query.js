@@ -124,7 +124,6 @@ export function createUpdateQuery(params) {
     // Create an update expression based on params
     // Assuming that the keys are the same as the DynamoDB key
     UpdateExpression: paramKeys.reduce((acc, curr, i) => {
-      console.log(curr, acc);
       return `${acc}${i === 0 ? 'SET ' : ', '}${constructUpdateString(curr)}`;
     }, ''),
   };
