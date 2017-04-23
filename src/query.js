@@ -110,3 +110,35 @@ export function constructAttributeValue(key, value) {
 
   return { [`${valuePrefix}${key}`]: value };
 }
+
+export function createUpdateQuery(params) {
+  const paramKeys = Object.keys(params);
+
+  return {
+    ExpressionAttributeNames: constructAttributeNames(params),
+    // Create a key/value mapper object that maps data from the params object
+    // To prefixed keys you can use in the update expression
+    ExpressionAttributeValues: paramKeys.reduce((acc, curr) => {
+      return Object.assign(acc, constructAttributeValue(curr, params[curr]));
+    }, {}),
+    // Create an update expression based on params
+    // Assuming that the keys are the same as the DynamoDB key
+    UpdateExpression: paramKeys.reduce((acc, curr, i) => {
+      return `${acc}${i === 0 ? 'SET ' : ','} ${constructUpdateString(curr)}`;
+    }, ''),
+  };
+}
+
+export function constructUpdateString(key) {
+  return `${keyPrefix}${key} = ${valuePrefix}${key}`;
+}
+
+export function constructAttributeNames(params) {
+  const paramKeys = Object.keys(params);
+
+  return paramKeys.reduce((acc, curr) => {
+    return Object.assign(acc, {
+      [`${keyPrefix}${curr}`]: curr,
+    }, {});
+  }, {});
+}

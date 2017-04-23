@@ -4,7 +4,9 @@ import {
   constructComparisonString,
   constructAttributeValue,
   keyPrefix,
-  valuePrefix
+  valuePrefix,
+  constructUpdateString,
+  constructAttributeNames,
 } from './query';
 
 const paramsA = { id: 1, name: 'pink pony', interests: 'ponying?' };
@@ -77,5 +79,17 @@ describe('constructAttributeValue', () => {
   it('Should leave non objects alone', () => {
     expect(constructAttributeValue('a', 'sup')).toEqual({ [`${valuePrefix}a`]: 'sup' });
       expect(constructAttributeValue('a', 6)).toEqual({ [`${valuePrefix}a`]: 6 });
+  });
+});
+
+describe('constructUpdateString', () => {
+  it('Should create an assignment string', () => {
+    expect(constructUpdateString('pony')).toEqual(`${keyPrefix}pony = ${valuePrefix}pony`);
+  });
+});
+
+describe('constructAttributeNames', () => {
+  it('Should prefix keys', () => {
+    expect(constructAttributeNames({'pony': 'Foo'})).toEqual({[`${keyPrefix}pony`]: 'pony'});
   });
 });
