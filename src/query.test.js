@@ -7,6 +7,7 @@ import {
   valuePrefix,
   constructUpdateString,
   constructAttributeNames,
+  createUpdateQuery,
 } from './query';
 
 const paramsA = { id: 1, name: 'pink pony', interests: 'ponying?' };
@@ -91,5 +92,21 @@ describe('constructUpdateString', () => {
 describe('constructAttributeNames', () => {
   it('Should prefix keys', () => {
     expect(constructAttributeNames({'pony': 'Foo'})).toEqual({[`${keyPrefix}pony`]: 'pony'});
+  });
+});
+
+describe('createUpdateQuery', () => {
+  it('Should so stuff', () => {
+    expect(createUpdateQuery({'pony': 'Foo', 'pink': 'Bar'})).toEqual({
+      ExpressionAttributeNames: {
+        [`${keyPrefix}pony`]: 'pony',
+        [`${keyPrefix}pink`]: 'pink',
+      },
+      ExpressionAttributeValues: {
+        [`${valuePrefix}pony`]: 'Foo',
+        [`${valuePrefix}pink`]: 'Bar',
+      },
+      UpdateExpression: `SET #dtpony = :dtpony, #dtpink = :dtpink`
+    });
   });
 });
