@@ -66,8 +66,8 @@ describe('constructAttributeValue', () => {
     expect(constructAttributeValue('a', { $lte: 1 })).toEqual({ [`${valuePrefix}a`]: 1 });
     expect(constructAttributeValue('a', { $gt: 1 })).toEqual({ [`${valuePrefix}a`]: 1 });
     expect(constructAttributeValue('a', { $gte: 1 })).toEqual({ [`${valuePrefix}a`]: 1 });
-    expect(constructAttributeValue('b', { $in: [1,2,3] })).toEqual({ [`${valuePrefix}b`]: [1,2,3] });
-    expect(constructAttributeValue('b', { $nin: [1,2,3] })).toEqual({ [`${valuePrefix}b`]: [1,2,3] });
+    expect(constructAttributeValue('b', { $in: [1,2,3] })).toEqual({[`${valuePrefix}b0`]: 1, [`${valuePrefix}b1`]: 2, [`${valuePrefix}b2`]: 3});
+    expect(constructAttributeValue('b', { $nin: [1,2,3] })).toEqual({[`${valuePrefix}b0`]: 1, [`${valuePrefix}b1`]: 2, [`${valuePrefix}b2`]: 3});
   });
 
   it('Should leave other objects alone', () => {
