@@ -13,8 +13,8 @@ const dynatable = require('dynatable');
 
 AWS.config.update({
   region: "eu-west-1",
-  accessKeyId: "AKIAJX24PKMIEKUZBY3Q",
-  secretAccessKey: "M2C/3rIc/48Yyy2ILz+cWbM1ANW3m6i4Xvcaqd/K"
+  accessKeyId: "YOUR_KEY_HERE",
+  secretAccessKey: "YOUR_SECRET_KEY_HERE"
 });
 const docClient = new AWS.DynamoDB.DocumentClient();
 
