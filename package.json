@@ -1,6 +1,6 @@
 {
   "name": "dynatable",
-  "version": "0.0.2",
+  "version": "0.0.3",
   "description": "A wrapper for DynamoDB tables, with a promise wrapped simplified API for the AWS SDK's DynamoDB.DocumentClient",
   "main": "dist/index.js",
   "jsnext:main": "src/index.js",
@@ -29,9 +29,5 @@
     "jest": "18.1.0",
     "rollup": "0.41.1",
     "rollup-plugin-buble": "0.15.0"
-  },
-  "dependencies": {
-    "babel-jest": "18.0.0",
-    "jest": "18.1.0"
   }
 }
