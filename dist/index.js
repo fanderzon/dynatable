@@ -250,6 +250,7 @@ function tableWrapper(docClient, TableName, tableKeyDefinition) {
     put: function (params) { return promiseWrapper(docClient, 'put', {
       TableName: TableName,
       Item: params,
+      ReturnValues: 'ALL_OLD',
     }); },
     update: function (Key, params) { return update(Object.assign({}, tableParams, { Key: Key, params: params })); },
     delete: function (Key) { return promiseWrapper(docClient, 'delete', {
