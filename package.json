@@ -1,6 +1,6 @@
 {
   "name": "dynatable",
-  "version": "0.0.4",
+  "version": "0.0.5",
   "description": "A wrapper for DynamoDB tables, with a promise wrapped simplified API for the AWS SDK's DynamoDB.DocumentClient",
   "main": "dist/index.js",
   "jsnext:main": "src/index.js",
