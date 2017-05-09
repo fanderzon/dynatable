@@ -12,7 +12,7 @@ export default function tableWrapper(docClient, TableName, tableKeyDefinition) {
     put: params => promiseWrapper(docClient, 'put', {
       TableName,
       Item: params,
-      ReturnValues: 'ALL_NEW',
+      ReturnValues: 'ALL_OLD',
     }),
     update: (Key, params) => update(Object.assign({}, tableParams, { Key, params })),
     delete: Key => promiseWrapper(docClient, 'delete', {
