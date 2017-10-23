@@ -1,5 +1,4 @@
 import promiseWrapper from './promise-wrapper';
-import { splitKeysAndParams } from './query';
 import { isObject } from './util';
 import { find, findOne } from './find';
 import { update } from './update';

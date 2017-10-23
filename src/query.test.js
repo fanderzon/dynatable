@@ -21,9 +21,10 @@ describe('splitKeysAndParams', () => {
     expect(splitKeysAndParams(paramsA, keysA)[1]).toEqual({name: 'pink pony', interests: 'ponying?'});
   });
 
-  it('Should return null on faulty input', () => {
-    expect(splitKeysAndParams('a string', keysA)).toEqual(null);
-    expect(splitKeysAndParams(paramsA, ['1', 2, 3])).toEqual(null);
+  it('Should always return an array, with empty objects on faulty input', () => {
+    const emptyRes = [{}, {}];
+    expect(splitKeysAndParams('a string', keysA)).toEqual(emptyRes);
+    expect(splitKeysAndParams(paramsA, ['1', 2, 3])[1]).toEqual(paramsA);
   });
 });
 
@@ -31,6 +32,10 @@ describe('createFilterQuery', () => {
   it('Should create filter expression out of single key/value pair', () => {
     expect(createFilterQuery({ a: 1 })).toEqual({ExpressionAttributeNames: {'#dta': 'a'}, ExpressionAttributeValues: {':dta': 1}, FilterExpression: '(#dta = :dta)'});
   });
+  it('Should return empty object oninput', () => {
+    expect(createFilterQuery({})).toEqual({});
+    expect(createFilterQuery()).toEqual({});
+  })
 });
 
 describe('constructComparisonString', () => {

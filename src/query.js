@@ -8,9 +8,8 @@ export const valuePrefix = ':dt';
 // and another object for all other params
 // ({id: 1, name: 'pony', interests: 'ponying'}, { id: 'N' }) -> [{id: 1}, {name: 'pony', interests: 'ponying'}]
 export function splitKeysAndParams(params, tableKeys) {
-  if (!isObject(params) || !isObject(tableKeys)) {
-    return null;
-  }
+  params = isObject(params) ? params : {};
+  tableKeys = isObject(tableKeys) ? tableKeys : {};
 
   const keys = Object.keys(tableKeys);
   const paramKeys = Object.keys(params);
@@ -24,8 +23,12 @@ export function splitKeysAndParams(params, tableKeys) {
   ];
 }
 
-export function createFilterQuery(params) {
+export function createFilterQuery(params = {}) {
   const paramKeys = Object.keys(params);
+  if (!paramKeys || paramKeys.length === 0) {
+    return {};
+  }
+
   return {
     FilterExpression: paramKeys.reduce((acc, key) => {
       const maybeAnd = acc === '' ? '' : ' AND '
