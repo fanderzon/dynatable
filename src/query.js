@@ -8,9 +8,8 @@ export const valuePrefix = ':dt';
 // and another object for all other params
 // ({id: 1, name: 'pony', interests: 'ponying'}, { id: 'N' }) -> [{id: 1}, {name: 'pony', interests: 'ponying'}]
 export function splitKeysAndParams(params, tableKeys) {
-  if (!isObject(params) || !isObject(tableKeys)) {
-    return null;
-  }
+  params = isObject(params) ? params : {};
+  tableKeys = isObject(tableKeys) ? tableKeys : {};
 
   const keys = Object.keys(tableKeys);
   const paramKeys = Object.keys(params);
