@@ -33,9 +33,9 @@ var valuePrefix = ':dt';
 // and another object for all other params
 // ({id: 1, name: 'pony', interests: 'ponying'}, { id: 'N' }) -> [{id: 1}, {name: 'pony', interests: 'ponying'}]
 function splitKeysAndParams(params, tableKeys) {
-  if (!isObject(params) || !isObject(tableKeys)) {
-    return null;
-  }
+  params = isObject(params) ? params : {};
+  tableKeys = isObject(tableKeys) ? tableKeys : {};
+
 
   var keys = Object.keys(tableKeys);
   var paramKeys = Object.keys(params);
@@ -52,7 +52,13 @@ function splitKeysAndParams(params, tableKeys) {
 }
 
 function createFilterQuery(params) {
+  if ( params === void 0 ) params = {};
+
   var paramKeys = Object.keys(params);
+  if (!paramKeys || paramKeys.length === 0) {
+    return {};
+  }
+
   return {
     FilterExpression: paramKeys.reduce(function (acc, key) {
       var maybeAnd = acc === '' ? '' : ' AND ';
@@ -180,7 +186,7 @@ function find(ref) {
 
   // If we have any params that aren't `key` attributes in the table we
   // need to use `docClient.scan` instead of `docClient.get`
-  if (isObject(scanParams) && Object.keys(scanParams).length > 0) {
+  if (Object.keys(Key).length === 0 || (isObject(scanParams) && Object.keys(scanParams).length > 0)) {
     return promiseWrapper(docClient, 'scan', Object.assign({
       TableName: TableName,
     }, createFilterQuery(scanParams)))

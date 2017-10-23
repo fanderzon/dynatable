@@ -23,8 +23,12 @@ export function splitKeysAndParams(params, tableKeys) {
   ];
 }
 
-export function createFilterQuery(params) {
+export function createFilterQuery(params = {}) {
   const paramKeys = Object.keys(params);
+  if (!paramKeys || paramKeys.length === 0) {
+    return {};
+  }
+
   return {
     FilterExpression: paramKeys.reduce((acc, key) => {
       const maybeAnd = acc === '' ? '' : ' AND '

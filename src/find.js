@@ -7,7 +7,7 @@ export function find({ docClient, TableName, params, tableKeyDefinition }) {
 
   // If we have any params that aren't `key` attributes in the table we
   // need to use `docClient.scan` instead of `docClient.get`
-  if (isObject(scanParams) && Object.keys(scanParams).length > 0) {
+  if (Object.keys(Key).length === 0 || (isObject(scanParams) && Object.keys(scanParams).length > 0)) {
     return promiseWrapper(docClient, 'scan', Object.assign({
       TableName,
     }, createFilterQuery(scanParams)))
