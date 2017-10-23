@@ -36,7 +36,6 @@ function splitKeysAndParams(params, tableKeys) {
   params = isObject(params) ? params : {};
   tableKeys = isObject(tableKeys) ? tableKeys : {};
 
-
   var keys = Object.keys(tableKeys);
   var paramKeys = Object.keys(params);
   return [
