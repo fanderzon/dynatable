@@ -34,7 +34,7 @@ Or the way I use it, define (and export) all tables of your project in one file,
 // all the setup from the previous example here
 
 export const userTable = dynatable(docClient, 'users', { id: 'N' });
-export const postTable = dynatable(docClient, 'users', { id: 'N' });
+export const postTable = dynatable(docClient, 'posts', { id: 'N' });
 ```
 
 **posts.js**
